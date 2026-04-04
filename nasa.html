@@ -1,38 +1,58 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+<meta charset="UTF-8">
 <title>NASA Earth Fullscreen</title>
+
 <style>
-body {
-  margin: 0;
-  background: black;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-}
-button {
-  font-size: 30px;
-  padding: 20px 40px;
-  background: #0a84ff;
-  color: white;
-  border: none;
-  border-radius: 10px;
-}
+  body {
+    margin: 0;
+    background: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    font-family: Arial, sans-serif;
+  }
+
+  button {
+    font-size: 28px;
+    padding: 20px 40px;
+    background: #0a84ff;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+  }
+
+  button:active {
+    transform: scale(0.98);
+  }
 </style>
 </head>
 
 <body>
 
-<button onclick="goFull()">ENTER FULLSCREEN</button>
+<button onclick="startExperience()">Tap to Start Live Earth View</button>
 
 <script>
-function goFull() {
-  // Request fullscreen
-  document.documentElement.requestFullscreen().then(() => {
-    // After fullscreen, redirect to NASA site
+function startExperience() {
+
+  // Request fullscreen (all browser fallbacks)
+  let elem = document.documentElement;
+
+  if (elem.requestFullscreen) {
+    elem.requestFullscreen();
+  } else if (elem.webkitRequestFullscreen) {
+    elem.webkitRequestFullscreen();
+  } else if (elem.msRequestFullscreen) {
+    elem.msRequestFullscreen();
+  }
+
+  // Small delay improves reliability
+  setTimeout(function() {
     window.location.href = "https://eyes.nasa.gov/apps/earth/#/vital-signs/visibleEarth/visible-earth";
-  });
+  }, 300);
 }
 </script>
 
