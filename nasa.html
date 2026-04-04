@@ -1,97 +1,38 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
-<title>NASA Live Earth</title>
-
+<title>Launch NASA Earth</title>
 <style>
-html, body {
-  margin: 0;
-  height: 100%;
-  background: black;
-  font-family: Arial;
+body {
+  margin:0;
+  background:black;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
+  font-family:Arial;
 }
 
-#start {
-  position: fixed;
-  inset: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: black;
-  z-index: 2;
+a {
+  text-decoration:none;
 }
 
 button {
-  font-size: 28px;
-  padding: 20px 40px;
-  background: #0a84ff;
-  color: white;
-  border: none;
-  border-radius: 10px;
-}
-
-#frameWrap {
-  display: none;
-  width: 100vw;
-  height: 100vh;
-}
-
-iframe {
-  width: 100%;
-  height: 100%;
-  border: 0;
+  font-size:28px;
+  padding:20px 40px;
+  background:#0a84ff;
+  color:white;
+  border:none;
+  border-radius:10px;
 }
 </style>
 </head>
 
 <body>
 
-<div id="start">
-  <button onclick="start()">Tap to Start Live Earth</button>
-</div>
-
-<div id="frameWrap">
-  <iframe id="frame"></iframe>
-</div>
-
-<script>
-function start() {
-  let elem = document.documentElement;
-
-  // Fullscreen request
-  let fs = elem.requestFullscreen || elem.webkitRequestFullscreen || elem.msRequestFullscreen;
-
-  if (fs) {
-    fs.call(elem).catch(() => {});
-  }
-
-  // Show iframe
-  document.getElementById("start").style.display = "none";
-  document.getElementById("frameWrap").style.display = "block";
-
-  let frame = document.getElementById("frame");
-
-  // Try loading NASA inside iframe
-  frame.src = "https://eyes.nasa.gov/apps/earth/#/vital-signs/visibleEarth/visible-earth";
-
-  // Fallback after 3 seconds if blocked
-  setTimeout(() => {
-    try {
-      if (!frame.contentWindow || frame.contentWindow.length === 0) {
-        fallback();
-      }
-    } catch (e) {
-      fallback();
-    }
-  }, 3000);
-}
-
-function fallback() {
-  alert("Opening NASA site directly");
-  window.location.href = "https://eyes.nasa.gov/apps/earth/#/vital-signs/visibleEarth/visible-earth";
-}
-</script>
+<a href="https://eyes.nasa.gov/apps/earth/#/vital-signs/visibleEarth/visible-earth">
+  <button>Launch Live Earth View</button>
+</a>
 
 </body>
 </html>
