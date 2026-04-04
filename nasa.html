@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>NASA Earth Fullscreen</title>
+<style>
+body {
+  margin: 0;
+  background: black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+button {
+  font-size: 30px;
+  padding: 20px 40px;
+  background: #0a84ff;
+  color: white;
+  border: none;
+  border-radius: 10px;
+}
+</style>
+</head>
+
+<body>
+
+<button onclick="goFull()">ENTER FULLSCREEN</button>
+
+<script>
+function goFull() {
+  // Request fullscreen
+  document.documentElement.requestFullscreen().then(() => {
+    // After fullscreen, redirect to NASA site
+    window.location.href = "https://eyes.nasa.gov/apps/earth/#/vital-signs/visibleEarth/visible-earth";
+  });
+}
+</script>
+
+</body>
+</html>
