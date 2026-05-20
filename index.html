@@ -1,3 +1,4 @@
+<canvaentity identifier="uhv-portal-final-with-dashboard" type="text/html" title="UHV Interactive Portal - Final Version with Dashboard">
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -32,7 +33,6 @@
             --tab-bg: rgba(15, 23, 42, 0.04);
         }
 
-        /* FIX: Changed from body.dark-mode to body.dark to match Tailwind's native class */
         body.dark {
             --bg-main: #020617;
             --bg-panel: rgba(15, 23, 42, 0.5);
@@ -72,7 +72,7 @@
             transition: all 0.3s ease;
         }
 
-        /* Shooting Stars Animation inside Loader Background */
+        /* Shooting Stars Animation */
         @keyframes shoot {
             0% {
                 transform: translate(0, 0) rotate(-45deg) scale(0);
@@ -119,7 +119,7 @@
             animation: pulseGlow 4s ease-in-out infinite;
         }
 
-        /* CSS-driven smooth height transition for Accordion */
+        /* Accordion */
         .accordion-content {
             max-height: 0;
             overflow: hidden;
@@ -143,15 +143,15 @@
             background: rgba(120, 120, 120, 0.2);
             border-radius: 4px;
         }
-        
-        /* FIX: Increased summary explanation text size for better readability */
+
+        /* Summary text readability */
         .summary-explanation {
             font-size: 0.875rem !important;
             line-height: 1.7 !important;
             font-weight: 400;
         }
-        
-        /* Start Quiz Button Styling */
+
+        /* Start Quiz Button */
         .start-quiz-btn {
             background: linear-gradient(135deg, #4f46e5 0%, #6366f1 100%);
             transition: all 0.3s ease;
@@ -162,8 +162,8 @@
             transform: translateY(-2px);
             box-shadow: 0 6px 20px rgba(79, 70, 229, 0.4);
         }
-        
-        /* Answer feedback colors - matches futuristic theme */
+
+        /* Answer feedback colors */
         .answer-correct {
             background: rgba(16, 185, 129, 0.1) !important;
             border-color: #10b981 !important;
@@ -175,7 +175,7 @@
         .answer-correct span:last-child {
             color: #10b981 !important;
         }
-        
+
         .answer-incorrect {
             background: rgba(239, 68, 68, 0.1) !important;
             border-color: #ef4444 !important;
@@ -187,7 +187,7 @@
         .answer-incorrect span:last-child {
             color: #ef4444 !important;
         }
-        
+
         .answer-disabled {
             opacity: 0.4;
             cursor: not-allowed;
@@ -198,6 +198,16 @@
         }
         .answer-disabled span:last-child {
             color: #6b7280 !important;
+        }
+
+        /* Progress Ring */
+        .progress-ring {
+            transform: rotate(-90deg);
+        }
+        .progress-ring-circle {
+            stroke-dasharray: 251.2;
+            stroke-dashoffset: 251.2;
+            transition: stroke-dashoffset 0.5s ease;
         }
     </style>
 </head>
@@ -210,7 +220,6 @@
 
     <div id="intro-loader" class="fixed inset-0 z-50 bg-slate-950 flex flex-col items-center justify-center p-6 transition-all duration-700">
         <div class="absolute inset-0 overflow-hidden pointer-events-none">
-            <!-- ENHANCED: More shooting stars for better loading screen effect -->
             <div class="shooting-star" style="top: 10%; right: 5%; animation-delay: 0s; animation-duration: 4s;"></div>
             <div class="shooting-star" style="top: 25%; right: 25%; animation-delay: 1.5s; animation-duration: 4.5s;"></div>
             <div class="shooting-star" style="top: 40%; right: 15%; animation-delay: 3s; animation-duration: 5s;"></div>
@@ -249,10 +258,10 @@
         </div>
     </div>
 
-    <header class="themed-panel border-b border-slate-200 dark:border-white/5 shadow-lg relative overflow-hidden">
-        <div class="max-w-6xl mx-auto px-4 py-6 sm:px-6 lg:px-8 relative z-10 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+    <header class="themed-panel border-b border-slate-200 dark:border-white/5 shadow-lg relative overflow-hidden sticky top-0 z-40">
+        <div class="max-w-6xl mx-auto px-4 py-4 sm:px-6 lg:px-8 relative z-10 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             <div class="flex items-center gap-4">
-                <div class="p-3 bg-indigo-500/10 rounded-2xl text-indigo-600 dark:text-indigo-400 border border-indigo-500/20 shadow-inner">
+                <div class="p-3 bg-gradient-to-br from-indigo-500/10 to-purple-500/10 rounded-2xl text-indigo-600 dark:text-indigo-400 border border-indigo-500/20 shadow-inner">
                     <i data-lucide="shield-check" class="w-8 h-8"></i>
                 </div>
                 <div>
@@ -262,19 +271,21 @@
             </div>
 
             <div class="flex items-center gap-4 flex-wrap">
-                <nav class="flex gap-1 bg-slate-900/5 dark:bg-slate-900/60 p-1 rounded-2xl border border-slate-200 dark:border-white/5">
-                    <button onclick="switchTab('quiz')" id="tab-btn-quiz" class="px-5 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center gap-2 bg-indigo-600 text-white shadow-lg shadow-indigo-600/20">
+                <nav class="flex gap-1 bg-slate-900/5 dark:bg-slate-900/60 p-1 rounded-2xl border border-slate-200 dark:border-white/5 shadow-sm">
+                    <button onclick="switchTab('quiz')" id="tab-btn-quiz" class="px-5 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center gap-2 bg-indigo-600 text-white shadow-lg shadow-indigo-600/20 hover:bg-indigo-700">
                         <i data-lucide="check-square" class="w-4 h-4"></i>
                         Interactive Quizzes
                     </button>
-                    <button onclick="switchTab('summary')" id="tab-btn-summary" class="px-5 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center gap-2 text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-white">
+                    <button onclick="switchTab('summary')" id="tab-btn-summary" class="px-5 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center gap-2 text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-white hover:bg-slate-900/10 dark:hover:bg-white/10">
                         <i data-lucide="book-marked" class="w-4 h-4"></i>
                         Syllabus Summary
                     </button>
+                    <button onclick="switchTab('dashboard')" id="tab-btn-dashboard" class="px-5 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center gap-2 text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-white hover:bg-slate-900/10 dark:hover:bg-white/10">
+                        <i data-lucide="layout-dashboard" class="w-4 h-4"></i>
+                        Dashboard
+                    </button>
                 </nav>
 
-                <!-- FIX: Removed notification system completely -->
-                
                 <button onclick="toggleTheme()" class="p-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/10 rounded-2xl shadow-sm text-slate-600 dark:text-yellow-400 hover:scale-105 transition-all duration-200" title="Switch Theme">
                     <i id="theme-icon" data-lucide="moon" class="w-5 h-5"></i>
                 </button>
@@ -283,14 +294,15 @@
     </header>
 
     <div class="max-w-6xl mx-auto px-4 mt-6 sm:px-6 lg:px-8">
-        <div class="themed-panel border-cyan-500/20 rounded-2xl p-4 flex gap-3.5 items-start" style="background: var(--alert-bg); border-color: var(--alert-border);">
+        <div class="themed-panel border-cyan-500/20 rounded-2xl p-4 flex gap-3.5 items-start shadow-sm" style="background: var(--alert-bg); border-color: var(--alert-border);">
             <div class="p-2 bg-cyan-500/10 rounded-xl mt-0.5" style="color: var(--alert-text);">
                 <i data-lucide="sparkles" class="w-5 h-5"></i>
             </div>
             <div>
-                <h4 class="font-bold text-xs sm:text-sm" style="color: var(--alert-text);">Preparation Advisory</h4>
+                <h4 class="font-bold text-xs sm:text-sm" style="color: var(--alert-text);">📚 Preparation Advisory</h4>
                 <p class="text-xs text-slate-600 dark:text-slate-400 mt-0.5 leading-relaxed">
                     For optimal academic evaluation accuracy, we strongly suggest you first complete and read the items in the <strong class="text-indigo-600 dark:text-white font-semibold">Syllabus Summary</strong> tab before initiating your Module assessments.
+                    <span class="text-cyan-600 dark:text-cyan-400"> Track your progress in the Dashboard!</span>
                 </p>
             </div>
         </div>
@@ -298,17 +310,173 @@
 
     <main class="max-w-6xl mx-auto px-4 py-6 sm:px-6 lg:px-8 flex-grow w-full">
         
+        <!-- Dashboard Section -->
+        <section id="dashboard-section" class="hidden space-y-8 animate-slide-up">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Overall Progress Card -->
+                <div class="themed-panel rounded-3xl p-6 relative overflow-hidden group">
+                    <div class="absolute inset-0 bg-gradient-to-br from-indigo-500/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    <div class="relative">
+                        <div class="flex justify-between items-start mb-4">
+                            <span class="bg-indigo-500/10 text-indigo-600 dark:text-indigo-300 font-bold text-[10px] uppercase tracking-wider px-3 py-1 rounded-full border border-indigo-500/20">Overall Progress</span>
+                            <i data-lucide="trending-up" class="w-5 h-5 text-indigo-600 dark:text-indigo-400"></i>
+                        </div>
+                        <div class="flex items-center gap-4 mb-4">
+                            <div class="relative w-20 h-20">
+                                <svg class="w-20 h-20 progress-ring" viewBox="0 0 80 80">
+                                    <circle cx="40" cy="40" r="40" stroke="rgba(120, 120, 120, 0.1)" stroke-width="4" fill="none"/>
+                                    <circle id="overall-progress-ring" class="progress-ring-circle" cx="40" cy="40" r="40" stroke="url(#progressGradient)" stroke-width="4" fill="none"/>
+                                </svg>
+                                <defs>
+                                    <linearGradient id="progressGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                                        <stop offset="0%" style="stop-color:#6366f1;stop-opacity:1" />
+                                        <stop offset="100%" style="stop-color:#06b6d4;stop-opacity:1" />
+                                    </linearGradient>
+                                </defs>
+                                <div class="absolute inset-0 flex items-center justify-center">
+                                    <span id="overall-progress-text" class="text-xl font-extrabold">0%</span>
+                                </div>
+                            </div>
+                            <div>
+                                <h3 class="text-2xl font-bold"><span id="completed-modules">0</span>/3</h3>
+                                <p class="text-xs text-slate-600 dark:text-slate-400">Modules Completed</p>
+                            </div>
+                        </div>
+                        <div class="flex justify-between text-xs text-slate-600 dark:text-slate-400">
+                            <span>Average Score: <strong id="avg-score" class="text-indigo-600 dark:text-indigo-400">0%</strong></span>
+                            <span>Time Spent: <strong id="total-time" class="text-indigo-600 dark:text-indigo-400">0m</strong></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Module 1 Card -->
+                <div class="themed-panel rounded-3xl p-6">
+                    <div class="flex justify-between items-start mb-4">
+                        <span class="bg-indigo-500/10 text-indigo-600 dark:text-indigo-300 font-bold text-[10px] uppercase tracking-wider px-3 py-1 rounded-full border border-indigo-500/20">Module 1</span>
+                        <i data-lucide="book-open" class="w-5 h-5 text-indigo-600 dark:text-indigo-400"></i>
+                    </div>
+                    <h3 class="text-lg font-bold mb-2">Foundations of Value Education</h3>
+                    <p class="text-xs text-slate-600 dark:text-slate-400 mb-4 leading-relaxed">Right Understanding, Self-Exploration & Natural Acceptance</p>
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center gap-2">
+                            <div class="w-8 h-8 rounded-full bg-indigo-500/10 flex items-center justify-center">
+                                <i data-lucide="check" class="w-4 h-4 text-indigo-600"></i>
+                            </div>
+                            <span class="text-xs font-semibold">Score: <strong id="m1-score">0%</strong></span>
+                        </div>
+                        <span class="text-xs text-slate-600 dark:text-slate-400">Best: <strong id="m1-best">0%</strong></span>
+                    </div>
+                    <div class="w-full bg-slate-200 dark:bg-slate-700 h-1.5 rounded-full overflow-hidden">
+                        <div id="m1-progress" class="bg-indigo-500 h-full rounded-full transition-all duration-300" style="width: 0%"></div>
+                    </div>
+                    <button onclick="selectQuizModule(1); switchTab('quiz');" class="mt-4 w-full bg-indigo-500/10 hover:bg-indigo-500/20 text-indigo-600 dark:text-indigo-400 font-bold py-2.5 px-4 rounded-xl text-xs transition duration-200 flex items-center justify-center gap-2">
+                        <i data-lucide="play-circle" class="w-4 h-4"></i>
+                        Continue Learning
+                    </button>
+                </div>
+
+                <!-- Module 2 Card -->
+                <div class="themed-panel rounded-3xl p-6">
+                    <div class="flex justify-between items-start mb-4">
+                        <span class="bg-cyan-500/10 text-cyan-600 dark:text-cyan-300 font-bold text-[10px] uppercase tracking-wider px-3 py-1 rounded-full border border-cyan-500/20">Module 2</span>
+                        <i data-lucide="users" class="w-5 h-5 text-cyan-600 dark:text-cyan-400"></i>
+                    </div>
+                    <h3 class="text-lg font-bold mb-2">Harmony in Life & Relationships</h3>
+                    <p class="text-xs text-slate-600 dark:text-slate-400 mb-4 leading-relaxed">Trust, Respect & Universal Human Order</p>
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center gap-2">
+                            <div class="w-8 h-8 rounded-full bg-cyan-500/10 flex items-center justify-center">
+                                <i data-lucide="check" class="w-4 h-4 text-cyan-600"></i>
+                            </div>
+                            <span class="text-xs font-semibold">Score: <strong id="m2-score">0%</strong></span>
+                        </div>
+                        <span class="text-xs text-slate-600 dark:text-slate-400">Best: <strong id="m2-best">0%</strong></span>
+                    </div>
+                    <div class="w-full bg-slate-200 dark:bg-slate-700 h-1.5 rounded-full overflow-hidden">
+                        <div id="m2-progress" class="bg-cyan-500 h-full rounded-full transition-all duration-300" style="width: 0%"></div>
+                    </div>
+                    <button onclick="selectQuizModule(2); switchTab('quiz');" class="mt-4 w-full bg-cyan-500/10 hover:bg-cyan-500/20 text-cyan-600 dark:text-cyan-400 font-bold py-2.5 px-4 rounded-xl text-xs transition duration-200 flex items-center justify-center gap-2">
+                        <i data-lucide="play-circle" class="w-4 h-4"></i>
+                        Continue Learning
+                    </button>
+                </div>
+
+                <!-- Module 3 Card -->
+                <div class="themed-panel rounded-3xl p-6">
+                    <div class="flex justify-between items-start mb-4">
+                        <span class="bg-purple-500/10 text-purple-600 dark:text-purple-300 font-bold text-[10px] uppercase tracking-wider px-3 py-1 rounded-full border border-purple-500/20">Module 3</span>
+                        <i data-lucide="globe" class="w-5 h-5 text-purple-600 dark:text-purple-400"></i>
+                    </div>
+                    <h3 class="text-lg font-bold mb-2">Harmony in Nature & Ethics</h3>
+                    <p class="text-xs text-slate-600 dark:text-slate-400 mb-4 leading-relaxed">Four Orders, Co-existence & Professional Ethics</p>
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center gap-2">
+                            <div class="w-8 h-8 rounded-full bg-purple-500/10 flex items-center justify-center">
+                                <i data-lucide="check" class="w-4 h-4 text-purple-600"></i>
+                            </div>
+                            <span class="text-xs font-semibold">Score: <strong id="m3-score">0%</strong></span>
+                        </div>
+                        <span class="text-xs text-slate-600 dark:text-slate-400">Best: <strong id="m3-best">0%</strong></span>
+                    </div>
+                    <div class="w-full bg-slate-200 dark:bg-slate-700 h-1.5 rounded-full overflow-hidden">
+                        <div id="m3-progress" class="bg-purple-500 h-full rounded-full transition-all duration-300" style="width: 0%"></div>
+                    </div>
+                    <button onclick="selectQuizModule(3); switchTab('quiz');" class="mt-4 w-full bg-purple-500/10 hover:bg-purple-500/20 text-purple-600 dark:text-purple-400 font-bold py-2.5 px-4 rounded-xl text-xs transition duration-200 flex items-center justify-center gap-2">
+                        <i data-lucide="play-circle" class="w-4 h-4"></i>
+                        Continue Learning
+                    </button>
+                </div>
+
+                <!-- Quick Stats -->
+                <div class="themed-panel rounded-3xl p-6 col-span-1 md:col-span-2 lg:col-span-3">
+                    <h3 class="font-bold mb-4">📊 Quick Statistics</h3>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        <div class="text-center p-4 bg-slate-900/5 dark:bg-white/5 rounded-xl">
+                            <i data-lucide="clock" class="w-6 h-6 mx-auto mb-2 text-indigo-600 dark:text-indigo-400"></i>
+                            <div class="text-2xl font-bold" id="total-questions-attempted">0</div>
+                            <div class="text-xs text-slate-600 dark:text-slate-400">Questions Attempted</div>
+                        </div>
+                        <div class="text-center p-4 bg-slate-900/5 dark:bg-white/5 rounded-xl">
+                            <i data-lucide="check-circle" class="w-6 h-6 mx-auto mb-2 text-success"></i>
+                            <div class="text-2xl font-bold" id="total-correct">0</div>
+                            <div class="text-xs text-slate-600 dark:text-slate-400">Correct Answers</div>
+                        </div>
+                        <div class="text-center p-4 bg-slate-900/5 dark:bg-white/5 rounded-xl">
+                            <i data-lucide="x-circle" class="w-6 h-6 mx-auto mb-2 text-error"></i>
+                            <div class="text-2xl font-bold" id="total-incorrect">0</div>
+                            <div class="text-xs text-slate-600 dark:text-slate-400">Incorrect Answers</div>
+                        </div>
+                        <div class="text-center p-4 bg-slate-900/5 dark:bg-white/5 rounded-xl">
+                            <i data-lucide="zap" class="w-6 h-6 mx-auto mb-2 text-secondary"></i>
+                            <div class="text-2xl font-bold" id="current-streak">0</div>
+                            <div class="text-xs text-slate-600 dark:text-slate-400">Current Streak</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Quiz Section -->
         <section id="quiz-section" class="space-y-6 animate-slide-up">
             <div class="flex gap-2 p-1 rounded-xl w-fit max-w-full" style="background: var(--tab-bg); border: 1px solid var(--border-color);">
-                <button onclick="selectQuizModule(1)" id="quiz-mod-1" class="px-4 py-2 rounded-lg text-xs font-bold transition-all bg-indigo-600 text-white">Module 1</button>
-                <button onclick="selectQuizModule(2)" id="quiz-mod-2" class="px-4 py-2 rounded-lg text-xs font-bold transition-all text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-white">Module 2</button>
-                <button onclick="selectQuizModule(3)" id="quiz-mod-3" class="px-4 py-2 rounded-lg text-xs font-bold transition-all text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-white">Module 3</button>
+                <button onclick="selectQuizModule(1)" id="quiz-mod-1" class="px-4 py-2 rounded-lg text-xs font-bold transition-all bg-indigo-600 text-white shadow-lg shadow-indigo-600/20 hover:bg-indigo-700 flex items-center gap-2">
+                    <i data-lucide="book-open" class="w-4 h-4"></i>
+                    Module 1
+                </button>
+                <button onclick="selectQuizModule(2)" id="quiz-mod-2" class="px-4 py-2 rounded-lg text-xs font-bold transition-all text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-white hover:bg-slate-900/10 dark:hover:bg-white/10 flex items-center gap-2">
+                    <i data-lucide="users" class="w-4 h-4"></i>
+                    Module 2
+                </button>
+                <button onclick="selectQuizModule(3)" id="quiz-mod-3" class="px-4 py-2 rounded-lg text-xs font-bold transition-all text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-white hover:bg-slate-900/10 dark:hover:bg-white/10 flex items-center gap-2">
+                    <i data-lucide="globe" class="w-4 h-4"></i>
+                    Module 3
+                </button>
             </div>
 
-            <div id="quiz-card" class="themed-panel rounded-3xl p-6 sm:p-8 min-h-[450px]">
+            <div id="quiz-card" class="themed-panel rounded-3xl p-6 sm:p-8 min-h-[450px] shadow-sm">
                 
                 <div id="quiz-active-view">
-                    <!-- NEW: Start Quiz Button - Timer does NOT auto-start -->
+                    <!-- Start Quiz Button - Timer does NOT auto-start -->
                     <div id="quiz-start-view" class="text-center py-12">
                         <div class="w-20 h-20 bg-indigo-500/10 border-2 border-indigo-500/25 rounded-full flex items-center justify-center mx-auto mb-6 text-indigo-600 dark:text-indigo-400 shadow-inner">
                             <i data-lucide="play-circle" class="w-10 h-10"></i>
@@ -325,15 +493,15 @@
                         <div class="flex justify-between items-center mb-6">
                             <span id="quiz-module-badge" class="bg-indigo-500/10 text-indigo-600 dark:text-indigo-300 font-bold text-[10px] uppercase tracking-wider px-3 py-1.5 rounded-full border border-indigo-500/20">Module 1 Evaluation</span>
                             <div class="text-slate-600 dark:text-slate-400 text-xs">
-                                Assessed Card <span id="current-q-num" class="text-indigo-600 dark:text-white font-bold">1</span> of <span id="total-q-num">30</span>
+                                Question <span id="current-q-num" class="text-indigo-600 dark:text-white font-bold">1</span> of <span id="total-q-num">30</span>
                             </div>
                         </div>
 
-                        <div class="w-full bg-slate-900/5 dark:bg-slate-950 h-1.5 rounded-full mb-8 border border-slate-200 dark:border-white/5 overflow-hidden">
+                        <div class="w-full bg-slate-900/5 dark:bg-slate-950 h-2 rounded-full mb-8 border border-slate-200 dark:border-white/5 overflow-hidden">
                             <div id="progress-bar-fill" class="bg-gradient-to-r from-indigo-500 to-cyan-400 h-full rounded-full transition-all duration-300" style="width: 0%"></div>
                         </div>
 
-                        <!-- Timer - Now starts only after clicking Start Quiz -->
+                        <!-- Timer - starts only after clicking Start Quiz -->
                         <div class="flex justify-end mb-4">
                             <div class="bg-slate-900/5 dark:bg-white/5 rounded-xl px-4 py-2 text-xs">
                                 <i data-lucide="clock" class="w-4 h-4 inline text-slate-600 dark:text-slate-400"></i>
@@ -368,20 +536,77 @@
                     </div>
 
                     <div id="quiz-results-view" class="hidden text-center py-8 max-w-lg mx-auto animate-slide-up">
-                        <div class="w-20 h-20 bg-indigo-500/10 border-2 border-indigo-500/25 rounded-full flex items-center justify-center mx-auto mb-6 text-indigo-600 dark:text-indigo-400 shadow-inner">
-                            <i data-lucide="award" class="w-10 h-10"></i>
+                        <div class="w-24 h-24 bg-gradient-to-br from-indigo-500/10 to-cyan-500/10 border-2 border-indigo-500/25 rounded-full flex items-center justify-center mx-auto mb-6 text-indigo-600 dark:text-indigo-400 shadow-inner">
+                            <i data-lucide="award" class="w-12 h-12"></i>
                         </div>
                         <h2 class="text-2xl font-extrabold mb-2">Module Evaluation Complete!</h2>
                         <p id="result-module-title" class="text-slate-600 dark:text-slate-400 text-xs mb-8">Module assessment metrics completed.</p>
 
                         <div class="grid grid-cols-2 gap-4 mb-8">
-                            <div class="themed-card p-5 rounded-2xl">
-                                <span class="block text-slate-600 dark:text-slate-400 text-[10px] font-semibold uppercase tracking-wider mb-1">Calculated Score</span>
-                                <span class="text-2xl font-extrabold"><span id="result-score-current">0</span>/<span id="result-score-total">30</span></span>
+                            <div class="themed-card p-5 rounded-2xl shadow-sm">
+                                <div class="flex items-center gap-2 mb-2">
+                                    <i data-lucide="target" class="w-5 h-5 text-indigo-600 dark:text-indigo-400"></i>
+                                    <span class="block text-slate-600 dark:text-slate-400 text-[10px] font-semibold uppercase tracking-wider">Score</span>
+                                </div>
+                                <span class="text-3xl font-extrabold"><span id="result-score-current">0</span>/<span id="result-score-total">30</span></span>
                             </div>
-                            <div class="themed-card p-5 rounded-2xl">
-                                <span class="block text-slate-600 dark:text-slate-400 text-[10px] font-semibold uppercase tracking-wider mb-1">Accuracy Factor</span>
-                                <span id="result-accuracy" class="text-2xl font-extrabold text-indigo-600 dark:text-indigo-400">0%</span>
+                            <div class="themed-card p-5 rounded-2xl shadow-sm">
+                                <div class="flex items-center gap-2 mb-2">
+                                    <i data-lucide="bar-chart-3" class="w-5 h-5 text-cyan-600 dark:text-cyan-400"></i>
+                                    <span class="block text-slate-600 dark:text-slate-400 text-[10px] font-semibold uppercase tracking-wider">Accuracy</span>
+                                </div>
+                                <span id="result-accuracy" class="text-3xl font-extrabold text-indigo-600 dark:text-indigo-400">0%</span>
+                            </div>
+                            <div class="themed-card p-5 rounded-2xl shadow-sm">
+                                <div class="flex items-center gap-2 mb-2">
+                                    <i data-lucide="clock" class="w-5 h-5 text-success"></i>
+                                    <span class="block text-slate-600 dark:text-slate-400 text-[10px] font-semibold uppercase tracking-wider">Time Taken</span>
+                                </div>
+                                <span id="result-time-taken" class="text-2xl font-extrabold">00:00</span>
+                            </div>
+                            <div class="themed-card p-5 rounded-2xl shadow-sm">
+                                <div class="flex items-center gap-2 mb-2">
+                                    <i data-lucide="zap" class="w-5 h-5 text-purple-600 dark:text-purple-400"></i>
+                                    <span class="block text-slate-600 dark:text-slate-400 text-[10px] font-semibold uppercase tracking-wider">Streak</span>
+                                </div>
+                                <span id="result-streak" class="text-2xl font-extrabold">0</span>
+                            </div>
+                        </div>
+
+                        <div class="themed-card p-5 rounded-2xl mb-8 shadow-sm">
+                            <h4 class="font-bold text-sm mb-4 flex items-center gap-2">
+                                <i data-lucide="pie-chart" class="w-4 h-4"></i>
+                                Performance Breakdown
+                            </h4>
+                            <div class="flex items-center gap-4">
+                                <div class="relative w-20 h-20">
+                                    <svg class="w-20 h-20 progress-ring" viewBox="0 0 80 80">
+                                        <circle cx="40" cy="40" r="40" stroke="rgba(120, 120, 120, 0.1)" stroke-width="4" fill="none"/>
+                                        <circle id="result-progress-ring" class="progress-ring-circle" cx="40" cy="40" r="40" stroke="url(#resultGradient)" stroke-width="4" fill="none"/>
+                                    </svg>
+                                    <defs>
+                                        <linearGradient id="resultGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                                            <stop offset="0%" style="stop-color:#10b981;stop-opacity:1" />
+                                            <stop offset="100%" style="stop-color:#6366f1;stop-opacity:1" />
+                                        </linearGradient>
+                                    </defs>
+                                </div>
+                                <div class="flex-1 grid grid-cols-2 gap-2">
+                                    <div class="flex items-center gap-2">
+                                        <div class="w-3 h-3 rounded-full bg-success"></div>
+                                        <div class="text-xs">
+                                            <div>Correct: <strong id="result-correct-count">0</strong></div>
+                                            <div class="text-slate-600 dark:text-slate-400"><span id="result-correct-pct">0%</span></div>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center gap-2">
+                                        <div class="w-3 h-3 rounded-full bg-error"></div>
+                                        <div class="text-xs">
+                                            <div>Incorrect: <strong id="result-incorrect-count">0</strong></div>
+                                            <div class="text-slate-600 dark:text-slate-400"><span id="result-incorrect-pct">0%</span></div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
@@ -390,19 +615,38 @@
                                 <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
                                 Retry Evaluation
                             </button>
+                            <button onclick="reviewAnswers()" class="flex-1 bg-cyan-500/10 hover:bg-cyan-500/20 text-cyan-600 dark:text-cyan-400 font-bold py-3.5 px-6 rounded-xl border border-cyan-500/20 transition flex items-center justify-center gap-2">
+                                <i data-lucide="file-text" class="w-4 h-4"></i>
+                                Review Answers
+                            </button>
                             <button onclick="goToNextModuleQuiz()" id="next-module-action-btn" class="flex-1 bg-gradient-to-r from-indigo-500 to-cyan-500 hover:from-indigo-400 hover:to-cyan-400 text-white font-bold py-3.5 px-6 rounded-xl transition flex items-center justify-center gap-2">
-                                <span>Next Module Exam</span>
+                                <span>Next Module</span>
                                 <i data-lucide="arrow-right" class="w-4 h-4"></i>
                             </button>
                         </div>
+                    </div>
+
+                    <!-- Review Answers View -->
+                    <div id="quiz-review-view" class="hidden animate-slide-up">
+                        <div class="flex justify-between items-center mb-6">
+                            <button onclick="backToResults()" class="flex items-center gap-2 text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-white text-xs font-bold py-2 px-4 rounded-xl hover:bg-slate-900/5 dark:hover:bg-white/5 transition">
+                                <i data-lucide="arrow-left" class="w-4 h-4"></i>
+                                Back to Results
+                            </button>
+                            <h3 class="text-lg font-bold">Answer Review</h3>
+                            <div></div>
+                        </div>
+                        
+                        <div id="review-questions" class="space-y-4 max-h-[500px] overflow-y-auto custom-scroll pr-4"></div>
                     </div>
                 </div>
             </div>
         </section>
 
+        <!-- Summary Section -->
         <section id="summary-section" class="hidden space-y-8 animate-slide-up">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div class="themed-panel rounded-3xl p-6 flex flex-col justify-between">
+                <div class="themed-panel rounded-3xl p-6 flex flex-col justify-between shadow-sm hover:shadow-lg transition-shadow">
                     <div>
                         <div class="flex justify-between items-start mb-4">
                             <span class="bg-indigo-500/10 text-indigo-600 dark:text-indigo-300 font-bold text-[10px] uppercase tracking-wider px-3 py-1 rounded-full border border-indigo-500/20">Module 01</span>
@@ -412,9 +656,13 @@
                         <p class="text-xs text-slate-600 dark:text-slate-400 mb-6 leading-relaxed">Understanding value proposals, continuous happiness metrics, the self-exploration cycle, and the distinction between natural acceptance and preconditioning.</p>
                     </div>
                     <div class="space-y-3 border-t border-slate-200 dark:border-white/5 pt-4" id="m1-summary-topics"></div>
+                    <button onclick="selectQuizModule(1); switchTab('quiz');" class="mt-4 w-full bg-indigo-500/10 hover:bg-indigo-500/20 text-indigo-600 dark:text-indigo-400 font-bold py-2.5 px-4 rounded-xl text-xs transition duration-200 flex items-center justify-center gap-2">
+                        <i data-lucide="play-circle" class="w-4 h-4"></i>
+                        Start Quiz
+                    </button>
                 </div>
 
-                <div class="themed-panel rounded-3xl p-6 flex flex-col justify-between">
+                <div class="themed-panel rounded-3xl p-6 flex flex-col justify-between shadow-sm hover:shadow-lg transition-shadow">
                     <div>
                         <div class="flex justify-between items-start mb-4">
                             <span class="bg-cyan-500/10 text-cyan-600 dark:text-cyan-300 font-bold text-[10px] uppercase tracking-wider px-3 py-1 rounded-full border border-cyan-500/20">Module 02</span>
@@ -424,9 +672,13 @@
                         <p class="text-xs text-slate-600 dark:text-slate-400 mb-6 leading-relaxed">Evaluating co-existence of Self ('I') and Body, foundational relationship parameters (Trust & Respect), and extending harmony to universal orders.</p>
                     </div>
                     <div class="space-y-3 border-t border-slate-200 dark:border-white/5 pt-4" id="m2-summary-topics"></div>
+                    <button onclick="selectQuizModule(2); switchTab('quiz');" class="mt-4 w-full bg-cyan-500/10 hover:bg-cyan-500/20 text-cyan-600 dark:text-cyan-400 font-bold py-2.5 px-4 rounded-xl text-xs transition duration-200 flex items-center justify-center gap-2">
+                        <i data-lucide="play-circle" class="w-4 h-4"></i>
+                        Start Quiz
+                    </button>
                 </div>
 
-                <div class="themed-panel rounded-3xl p-6 flex flex-col justify-between">
+                <div class="themed-panel rounded-3xl p-6 flex flex-col justify-between shadow-sm hover:shadow-lg transition-shadow">
                     <div>
                         <div class="flex justify-between items-start mb-4">
                             <span class="bg-purple-500/10 text-purple-600 dark:text-purple-300 font-bold text-[10px] uppercase tracking-wider px-3 py-1 rounded-full border border-purple-500/20">Module 03</span>
@@ -436,6 +688,10 @@
                         <p class="text-xs text-slate-600 dark:text-slate-400 mb-6 leading-relaxed">Deconstructing interactions within the four natural orders, existence as space submergence, human goals, and value-based professional ethics.</p>
                     </div>
                     <div class="space-y-3 border-t border-slate-200 dark:border-white/5 pt-4" id="m3-summary-topics"></div>
+                    <button onclick="selectQuizModule(3); switchTab('quiz');" class="mt-4 w-full bg-purple-500/10 hover:bg-purple-500/20 text-purple-600 dark:text-purple-400 font-bold py-2.5 px-4 rounded-xl text-xs transition duration-200 flex items-center justify-center gap-2">
+                        <i data-lucide="play-circle" class="w-4 h-4"></i>
+                        Start Quiz
+                    </button>
                 </div>
             </div>
         </section>
@@ -443,12 +699,13 @@
     </main>
 
     <footer class="themed-panel text-slate-600 dark:text-slate-400 py-6 border-t border-slate-200 dark:border-white/5 text-center text-xs">
-        <p>&copy; 2026 Universal Human Values Study Center. Evaluated alignment with AI Studio parameters.</p>
+        <div class="max-w-6xl mx-auto px-4 flex flex-col sm:flex-row justify-between items-center gap-4">
+            <p>&copy; 2026 Universal Human Values Study Center. Evaluated alignment with AI Studio parameters.</p>
+        </div>
     </footer>
 
     <script>
         // ==================== QUIZ DATABASE WITH RANDOMIZED ANSWERS ====================
-        // Original quiz database template - will be shuffled on load
         const quizDatabaseTemplate = {
             1: [
                 { q: "What is the basic human aspiration proposed in Universal Human Values?", options: ["Continuous happiness and continuous prosperity", "Accumulation of maximum wealth", "Attaining structural power in society", "Technological elimination of labor"], correct: 0, exp: "All human aspirations are reducible to continuous happiness (sukha) and continuous prosperity (samridhi)." },
@@ -548,10 +805,10 @@
             ]
         };
 
-        // Shuffled quiz database - will be populated on load
+        // Shuffled quiz database
         let quizDatabase = {};
 
-        // UI State Machine
+        // UI State
         let currentTab = "quiz";
         let currentQuizModule = 1;
         let currentQuestionIdx = 0;
@@ -560,80 +817,67 @@
         let timerInterval = null;
         let timeSpent = 0;
         let questionStartTime = 0;
+        let userAnswers = [];
+        let streak = 0;
+        let bestStreak = 0;
+        let reviewMode = false;
 
-        // ==================== ANSWER SHUFFLING FUNCTION ====================
-        // Fisher-Yates shuffle algorithm for randomizing answer positions
+        // Module Progress Tracking
+        let moduleProgress = {
+            1: { completed: false, bestScore: 0, attempts: 0, lastScore: 0, timeSpent: 0, questionsAnswered: 0 },
+            2: { completed: false, bestScore: 0, attempts: 0, lastScore: 0, timeSpent: 0, questionsAnswered: 0 },
+            3: { completed: false, bestScore: 0, attempts: 0, lastScore: 0, timeSpent: 0, questionsAnswered: 0 }
+        };
+
+        // ==================== ANSWER SHUFFLING ====================
         function shuffleAnswers(questions) {
             return questions.map(question => {
                 const shuffled = {...question};
                 const indices = [0, 1, 2, 3];
-                
-                // Fisher-Yates shuffle
                 for (let i = indices.length - 1; i > 0; i--) {
                     const j = Math.floor(Math.random() * (i + 1));
                     [indices[i], indices[j]] = [indices[j], indices[i]];
                 }
-                
                 const newOptions = indices.map(idx => shuffled.options[idx]);
                 const newCorrectIndex = indices.indexOf(shuffled.correct);
-                
-                return {
-                    ...shuffled,
-                    options: newOptions,
-                    correct: newCorrectIndex
-                };
+                return {...shuffled, options: newOptions, correct: newCorrectIndex};
             });
         }
 
-        // Initialize shuffled quiz database
         function initializeShuffledDatabase() {
             quizDatabase = {};
             for (const module in quizDatabaseTemplate) {
                 quizDatabase[module] = shuffleAnswers(quizDatabaseTemplate[module]);
             }
-            console.log("Quiz answers randomized successfully");
         }
 
-        // ==================== DOCUMENT READY ====================
+        // ==================== LOADING & INIT ====================
         document.addEventListener("DOMContentLoaded", () => {
             lucide.createIcons();
-            
-            // Initialize shuffled quiz database
             initializeShuffledDatabase();
-            
-            // Build summary accordion list
             buildSyllabusSummary();
-            
-            // Run loading routine
-            let percent = 0;
-            const loadSteps = [
-                "Right Understanding...",
-                "Relationship & Family...",
-                "Physical Facility Limitation...",
-                "Harmony in Nature...",
-                "Submergence in Space..."
-            ];
+            loadProgress();
 
+            let percent = 0;
+            const loadSteps = ["Right Understanding...", "Relationship & Family...", "Physical Facility Limitation...", "Harmony in Nature...", "Submergence in Space..."];
             const progressInterval = setInterval(() => {
                 percent += 2;
                 document.getElementById("loader-fill").style.width = `${percent}%`;
-                
                 const stepIdx = Math.floor((percent / 100) * loadSteps.length);
                 if (loadSteps[stepIdx]) {
                     document.getElementById("loader-status").innerText = loadSteps[stepIdx];
                 }
-
                 if (percent >= 100) {
                     clearInterval(progressInterval);
                     const loader = document.getElementById("intro-loader");
                     loader.classList.add("opacity-0");
                     setTimeout(() => {
                         loader.classList.add("hidden");
+                        updateDashboard();
                     }, 700);
                 }
             }, 100);
 
-            // Initialize Default Selected Tabs
             switchTab(currentTab);
         });
 
@@ -641,38 +885,52 @@
         function toggleTheme() {
             const body = document.body;
             const themeIcon = document.getElementById("theme-icon");
-            
-            // FIX: Checking for .dark instead of .dark-mode
             if (body.classList.contains("dark")) {
                 body.classList.remove("dark");
                 themeIcon.setAttribute("data-lucide", "moon");
+                localStorage.setItem("theme", "light");
             } else {
                 body.classList.add("dark");
                 themeIcon.setAttribute("data-lucide", "sun");
+                localStorage.setItem("theme", "dark");
             }
             lucide.createIcons();
         }
 
         // ==================== TAB SWITCHING ====================
         function switchTab(targetTab) {
+            if (currentTab === "quiz" && targetTab !== "quiz") {
+                saveQuizProgress();
+            }
             currentTab = targetTab;
-            
+
             const btnSummary = document.getElementById("tab-btn-summary");
             const btnQuiz = document.getElementById("tab-btn-quiz");
+            const btnDashboard = document.getElementById("tab-btn-dashboard");
             const secSummary = document.getElementById("summary-section");
             const secQuiz = document.getElementById("quiz-section");
+            const secDashboard = document.getElementById("dashboard-section");
+
+            [btnSummary, btnQuiz, btnDashboard].forEach(btn => {
+                btn.className = "px-5 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center gap-2 text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-white hover:bg-slate-900/10 dark:hover:bg-white/10";
+            });
+
+            [secSummary, secQuiz, secDashboard].forEach(sec => sec.classList.add("hidden"));
 
             if (targetTab === "summary") {
                 secSummary.classList.remove("hidden");
-                secQuiz.classList.add("hidden");
-                btnSummary.className = "px-5 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center gap-2 bg-indigo-600 text-white shadow-lg shadow-indigo-600/20";
-                btnQuiz.className = "px-5 py-2.5 rounded-xl text-xs font-bold transition-all text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-white";
-            } else {
-                secSummary.classList.add("hidden");
+                btnSummary.className = "px-5 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center gap-2 bg-indigo-600 text-white shadow-lg shadow-indigo-600/20 hover:bg-indigo-700";
+            } else if (targetTab === "quiz") {
                 secQuiz.classList.remove("hidden");
-                btnSummary.className = "px-5 py-2.5 rounded-xl text-xs font-bold transition-all text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-white";
-                btnQuiz.className = "px-5 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center gap-2 bg-indigo-600 text-white shadow-lg shadow-indigo-600/20";
+                btnQuiz.className = "px-5 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center gap-2 bg-indigo-600 text-white shadow-lg shadow-indigo-600/20 hover:bg-indigo-700";
+                if (!reviewMode) loadQuizQuestion();
+            } else if (targetTab === "dashboard") {
+                secDashboard.classList.remove("hidden");
+                btnDashboard.className = "px-5 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center gap-2 bg-indigo-600 text-white shadow-lg shadow-indigo-600/20 hover:bg-indigo-700";
+                updateDashboard();
             }
+
+            document.querySelector("main").scrollTo({ top: 0, behavior: "smooth" });
         }
 
         // ==================== ACCORDION ====================
@@ -680,115 +938,55 @@
             [1, 2, 3].forEach(modNum => {
                 const targetEl = document.getElementById(`m${modNum}-summary-topics`);
                 targetEl.innerHTML = "";
-                
-                // FIX: Increased summary explanation text size for better readability
                 const topics = {
                     1: [
-                        {
-                            title: "Value Education",
-                            desc: "The critical educational process designed to help individuals discover 'what to do' (values) and 'how to do it' (skills) in universal harmony. Value Education is not a set of moral dogmas, but a rational methodology leading from animal consciousness (Jiv Chetna)—focused solely on the accumulation of physical facilities—to human consciousness (Manav Chetna), facilitating mutual happiness and mutual prosperity across all levels of living."
-                        },
-                        {
-                            title: "Self-Exploration",
-                            desc: "An internal, evolutionary process of self-observation and value-discovery. It acts as a dialogical exploration between 'what I am' (my current behavior and state of being) and 'what I really want to be' (my natural acceptance). Every proposal in this curriculum is not to be accepted on authority but needs verification on one's own right, validating it in actual living and verifying it with natural acceptance."
-                        },
-                        {
-                            title: "Natural Acceptance",
-                            desc: "The innate, universal, and invariant faculty of human consciousness that recognizes harmony and relationship naturally. Unlike conditional acceptance—which is highly variable and depends on external preconditioning, sensory pleasures, or peer pressure—Natural Acceptance remains constant across all human beings, regardless of time, physical location, or cultural backgrounds."
-                        },
-                        {
-                            title: "Continuous Happiness (Sukh)",
-                            desc: "An ongoing qualitative state of internal harmony and equilibrium inside the conscious Self ('I'). Sukh is achieved when there is alignment and no internal contradictions within the desires, thoughts, and expectations of the Self. It stands in stark contrast to sensory excitement, which is temporary, transient, and leads to addiction or eventual physical exhaustion."
-                        },
-                        {
-                            title: "Prosperity (Samridhi)",
-                            desc: "The qualitative feeling of having and producing more than required physical facilities. Prosperity requires a human being to first identify the real quantitative limitations of their material Body, and secondly, to produce or possess an abundance of physical facility. Realizing this limitation prevents the limitless hoarding of materials and eliminates the feeling of deprivation."
-                        },
-                        {
-                            title: "Right Understanding (Samadhan)",
-                            desc: "The fundamental cognitive clarity that enables humans to observe and understand harmony as it naturally exists across all levels of existence (Self, Family, Society, Nature). Right Understanding is the foundational priority in human life; without it, we cannot correctly evaluate human relationships or identify the correct limits of physical facilities."
-                        },
-                        {
-                            title: "Physical Facilities (Suvidha)",
-                            desc: "Physical-chemical resources utilized to nurture, protect, and properly operate the material Body. In the UHV framework, Suvidha is recognized as necessary but incomplete for a human being. While animals are satisfied with physical facilities alone, humans require Right Understanding in the Self and Right Feelings in Relationships alongside Suvidha."
-                        }
+                        {title: "Value Education", desc: "The critical educational process designed to help individuals discover 'what to do' (values) and 'how to do it' (skills) in universal harmony. Value Education is not a set of moral dogmas, but a rational methodology leading from animal consciousness (Jiv Chetna)—focused solely on the accumulation of physical facilities—to human consciousness (Manav Chetna), facilitating mutual happiness and mutual prosperity across all levels of living."},
+                        {title: "Self-Exploration", desc: "An internal, evolutionary process of self-observation and value-discovery. It acts as a dialogical exploration between 'what I am' (my current behavior and state of being) and 'what I really want to be' (my natural acceptance). Every proposal in this curriculum is not to be accepted on authority but needs verification on one's own right, validating it in actual living and verifying it with natural acceptance."},
+                        {title: "Natural Acceptance", desc: "The innate, universal, and invariant faculty of human consciousness that recognizes harmony and relationship naturally. Unlike conditional acceptance—which is highly variable and depends on external preconditioning, sensory pleasures, or peer pressure—Natural Acceptance remains constant across all human beings, regardless of time, physical location, or cultural backgrounds."},
+                        {title: "Continuous Happiness (Sukh)", desc: "An ongoing qualitative state of internal harmony and equilibrium inside the conscious Self ('I'). Sukh is achieved when there is alignment and no internal contradictions within the desires, thoughts, and expectations of the Self. It stands in stark contrast to sensory excitement, which is temporary, transient, and leads to addiction or eventual physical exhaustion."},
+                        {title: "Prosperity (Samridhi)", desc: "The qualitative feeling of having and producing more than required physical facilities. Prosperity requires a human being to first identify the real quantitative limitations of their material Body, and secondly, to produce or possess an abundance of physical facility. Realizing this limitation prevents the limitless hoarding of materials and eliminates the feeling of deprivation."},
+                        {title: "Right Understanding (Samadhan)", desc: "The fundamental cognitive clarity that enables humans to observe and understand harmony as it naturally exists across all levels of existence (Self, Family, Society, Nature). Right Understanding is the foundational priority in human life; without it, we cannot correctly evaluate human relationships or identify the correct limits of physical facilities."},
+                        {title: "Physical Facilities (Suvidha)", desc: "Physical-chemical resources utilized to nurture, protect, and properly operate the material Body. In the UHV framework, Suvidha is recognized as necessary but incomplete for a human being. While animals are satisfied with physical facilities alone, humans require Right Understanding in the Self and Right Feelings in Relationships alongside Suvidha."}
                     ],
                     2: [
-                        {
-                            title: "Co-existence of Self ('I') & Body",
-                            desc: "The understanding that a human being is a co-existence of two distinct realities: the conscious Self ('I') and the material Body. The Self is qualitative, requiring continuous feelings of trust, respect, and peace; the Body is material and quantitative, needing temporary physico-chemical facilities. Confusing these two realities leads to trying to satisfy qualitative needs with physical facilities, which is impossible."
-                        },
-                        {
-                            title: "Trust (Vishwas)",
-                            desc: "The foundational value in relationships, defined as the unconditional clarity and assurance that the other person naturally wants my happiness and prosperity. Conflict and anger arise when we doubt the other's intention (which is always naturally for our well-being) because we are evaluating and reacting to their lack of competence (their external behaviors and mistakes)."
-                        },
-                        {
-                            title: "Respect (Samman) as Right Evaluation",
-                            desc: "Respect means 'Right Evaluation'—observing and accepting the other exactly as they are. Disrespect occurs when we deviate from this: Over-evaluation (Adhi-mulyan, judging someone above reality), Under-evaluation (Ava-mulyan, evaluating someone below reality), or Otherwise-evaluation (Amulyan, judging someone on non-essential factors like caste, gender, body, or wealth)."
-                        },
-                        {
-                            title: "Justice (Nyaya) in Relationships",
-                            desc: "Justice is the recognition, fulfillment, and right evaluation of values in human-to-human relationships. When values like Trust, Respect, and Affection are correctly observed and fulfilled, it leads to mutual happiness (Ubhay-tripti). This mutual fulfillment is the structural building block for social harmony and the elimination of exploitation."
-                        },
-                        {
-                            title: "Love (Prem) as the Complete Value",
-                            desc: "Love is the complete value (Sampurna Mulya) in human relationships, representing the feeling of unconditional relatedness to all units in existence. It starts within the family circle, extends systematically to the village, state, and ultimately manifests as a universal human family, allowing one to live in complete harmony without feelings of opposition."
-                        },
-                        {
-                            title: "Care and Guidance",
-                            desc: "Care is the internal feeling of responsibility to nurture and protect the physical-chemical operations of the Body. Guidance is the corresponding conscious responsibility of the Self to support and facilitate Right Understanding and value education within the Self ('I') of another human being, ensuring mutual growth."
-                        },
-                        {
-                            title: "Universal Human Order (Sarvabhaum Vyavastha)",
-                            desc: "The systemic global organization of humanity structured directly from family order to the world family. It is realized through the fulfillment of the five dimensions of human systems (Education, Health, Production, Justice, and Exchange) which satisfy societal goals: Samadhan (Right Understanding), Samridhi (Prosperity), Abhay (Trust), and Sah-astitva (Co-existence)."
-                        }
+                        {title: "Co-existence of Self ('I') & Body", desc: "The understanding that a human being is a co-existence of two distinct realities: the conscious Self ('I') and the material Body. The Self is qualitative, requiring continuous feelings of trust, respect, and peace; the Body is material and quantitative, needing temporary physico-chemical facilities. Confusing these two realities leads to trying to satisfy qualitative needs with physical facilities, which is impossible."},
+                        {title: "Trust (Vishwas)", desc: "The foundational value in relationships, defined as the unconditional clarity and assurance that the other person naturally wants my happiness and prosperity. Conflict and anger arise when we doubt the other's intention (which is always naturally for our well-being) because we are evaluating and reacting to their lack of competence (their external behaviors and mistakes)."},
+                        {title: "Respect (Samman) as Right Evaluation", desc: "Respect means 'Right Evaluation'—observing and accepting the other exactly as they are. Disrespect occurs when we deviate from this: Over-evaluation (Adhi-mulyan, judging someone above reality), Under-evaluation (Ava-mulyan, evaluating someone below reality), or Otherwise-evaluation (Amulyan, judging someone on non-essential factors like caste, gender, body, or wealth)."},
+                        {title: "Justice (Nyaya) in Relationships", desc: "Justice is the recognition, fulfillment, and right evaluation of values in human-to-human relationships. When values like Trust, Respect, and Affection are correctly observed and fulfilled, it leads to mutual happiness (Ubhay-tripti). This mutual fulfillment is the structural building block for social harmony and the elimination of exploitation."},
+                        {title: "Love (Prem) as the Complete Value", desc: "Love is the complete value (Sampurna Mulya) in human relationships, representing the feeling of unconditional relatedness to all units in existence. It starts within the family circle, extends systematically to the village, state, and ultimately manifests as a universal human family, allowing one to live in complete harmony without feelings of opposition."},
+                        {title: "Care and Guidance", desc: "Care is the internal feeling of responsibility to nurture and protect the physical-chemical operations of the Body. Guidance is the corresponding conscious responsibility of the Self to support and facilitate Right Understanding and value education within the Self ('I') of another human being, ensuring mutual growth."},
+                        {title: "Universal Human Order (Sarvabhaum Vyavastha)", desc: "The systemic global organization of humanity structured directly from family order to the world family. It is realized through the fulfillment of the five dimensions of human systems (Education, Health, Production, Justice, and Exchange) which satisfy societal goals: Samadhan (Right Understanding), Samridhi (Prosperity), Abhay (Trust), and Sah-astitva (Co-existence)."}
                     ],
                     3: [
-                        {
-                            title: "The Four Orders of Nature",
-                            desc: "The natural world consists of four distinct levels: Physical (material elements, soil), Pranic (plants, bio-life), Animal, and Human. The first three orders naturally co-exist in mutual fulfillment, nurturing each other. The Human order possesses potential for right understanding, but currently acts in exploitation of the other three orders due to a lack of values."
-                        },
-                        {
-                            title: "Existence as Co-existence (Sah-astitva)",
-                            desc: "The deep realization that existence is co-existence, wherein all bounded, active units (material and conscious) are submerged in the all-pervading, inactive, and transparent Space. Every unit is self-organized, energized, and naturally participates in relationships of mutual fulfillment, order, and co-existence with all other units."
-                        },
-                        {
-                            title: "Self-Regulation (Sanyam) & Health (Swasthya)",
-                            desc: "Sanyam is the feeling of responsibility in the conscious Self for the systematic nurturing, protection, and right utilization of the physical Body. Swasthya is the physical equilibrium of the body itself, characterized by organs working in harmony, and the body being ready to act as a proper instrument of the Self."
-                        },
-                        {
-                            title: "Professional Ethics",
-                            desc: "The ethical conduct of a professional that is conducive to the universal human order. It reflects the capability of a professional to make decisions that enrich human relationships and preserve nature. It marks a transition from a world-view of animal consciousness (exploitation) to human consciousness (mutual preservation)."
-                        },
-                        {
-                            title: "Humanistic Constitution",
-                            desc: "The structural, legal, and social framework of a society that guarantees mutual fulfillment among all humans and ensures the preservation and enrichment of the first three orders of nature. It forms the foundational blueprint for a global family and a universal human order."
-                        }
+                        {title: "The Four Orders of Nature", desc: "The natural world consists of four distinct levels: Physical (material elements, soil), Pranic (plants, bio-life), Animal, and Human. The first three orders naturally co-exist in mutual fulfillment, nurturing each other. The Human order possesses potential for right understanding, but currently acts in exploitation of the other three orders due to a lack of values."},
+                        {title: "Existence as Co-existence (Sah-astitva)", desc: "The deep realization that existence is co-existence, wherein all bounded, active units (material and conscious) are submerged in the all-pervading, inactive, and transparent Space. Every unit is self-organized, energized, and naturally participates in relationships of mutual fulfillment, order, and co-existence with all other units."},
+                        {title: "Self-Regulation (Sanyam) & Health (Swasthya)", desc: "Sanyam is the feeling of responsibility in the conscious Self for the systematic nurturing, protection, and right utilization of the physical Body. Swasthya is the physical equilibrium of the body itself, characterized by organs working in harmony, and the body being ready to act as a proper instrument of the Self."},
+                        {title: "Professional Ethics", desc: "The ethical conduct of a professional that is conducive to the universal human order. It reflects the capability of a professional to make decisions that enrich human relationships and preserve nature. It marks a transition from a world-view of animal consciousness (exploitation) to human consciousness (mutual preservation)."},
+                        {title: "Humanistic Constitution", desc: "The structural, legal, and social framework of a society that guarantees mutual fulfillment among all humans and ensures the preservation and enrichment of the first three orders of nature. It forms the foundational blueprint for a global family and a universal human order."}
                     ]
                 }[modNum];
 
                 topics.forEach((topic, idx) => {
                     const accordionContainer = document.createElement("div");
-                    accordionContainer.className = "themed-card rounded-2xl overflow-hidden transition-all duration-300";
+                    accordionContainer.className = "themed-card rounded-2xl overflow-hidden transition-all duration-300 shadow-sm";
 
-                    // The topic trigger button
                     const btn = document.createElement("button");
                     btn.className = "w-full text-left px-4 py-3 bg-slate-900/5 dark:bg-white/5 hover:bg-slate-900/10 dark:hover:bg-white/10 text-slate-800 dark:text-slate-200 hover:text-indigo-600 dark:hover:text-white text-xs font-bold transition flex items-center justify-between group focus:outline-none gap-2";
                     btn.onclick = () => toggleAccordion(modNum, idx);
                     btn.id = `acc-btn-${modNum}-${idx}`;
+                    btn.setAttribute("aria-expanded", "false");
                     btn.innerHTML = `
-                        <span class="flex-1 text-left whitespace-normal break-words pr-2">${idx + 1}. ${topic.title}</span>
+                        <div class="flex-1 text-left flex items-center gap-2">
+                            <span class="text-indigo-600 dark:text-indigo-400">${idx + 1}.</span>
+                            <span class="whitespace-normal break-words pr-2">${topic.title}</span>
+                        </div>
                         <i id="acc-icon-${modNum}-${idx}" data-lucide="chevron-down" class="w-4 h-4 text-slate-500 dark:text-slate-400 group-hover:text-indigo-600 dark:group-hover:text-white transition-transform duration-300 shrink-0"></i>
                     `;
 
-                    // The dropdown expansion description box
                     const descContainer = document.createElement("div");
                     descContainer.id = `acc-content-${modNum}-${idx}`;
                     descContainer.className = "accordion-content border-t border-slate-200 dark:border-white/5 bg-slate-900/[0.01] dark:bg-black/20";
-                    // FIX: Increased text size and improved readability
-                    descContainer.innerHTML = `
-                        <p class="summary-explanation text-slate-700 dark:text-slate-300 leading-relaxed p-4">${topic.desc}</p>
-                    `;
+                    descContainer.innerHTML = `<p class="summary-explanation text-slate-700 dark:text-slate-300 leading-relaxed p-4 font-medium">${topic.desc}</p>`;
 
                     accordionContainer.appendChild(btn);
                     accordionContainer.appendChild(descContainer);
@@ -798,130 +996,126 @@
             lucide.createIcons();
         }
 
-        // Accordion engine: toggles open, auto collapses others
         function toggleAccordion(moduleNum, topicIdx) {
             const targetContentId = `acc-content-${moduleNum}-${topicIdx}`;
             const targetIconId = `acc-icon-${moduleNum}-${topicIdx}`;
-            
+            const targetBtnId = `acc-btn-${moduleNum}-${topicIdx}`;
+
             const targetContent = document.getElementById(targetContentId);
             const targetIcon = document.getElementById(targetIconId);
+            const targetBtn = document.getElementById(targetBtnId);
 
             const isAlreadyActive = targetContent.classList.contains("active");
 
-            // Query all accordion content areas across the entire page first to collapse them
-            const allContents = document.querySelectorAll(".accordion-content");
-            const allIcons = document.querySelectorAll("[id^='acc-icon-']");
+            const moduleContents = document.querySelectorAll(`#m${moduleNum}-summary-topics .accordion-content`);
+            const moduleIcons = document.querySelectorAll(`#m${moduleNum}-summary-topics [id^='acc-icon-${moduleNum}-']`);
+            const moduleBtns = document.querySelectorAll(`#m${moduleNum}-summary-topics [id^='acc-btn-${moduleNum}-']`);
 
-            allContents.forEach(el => el.classList.remove("active"));
-            allIcons.forEach(el => {
+            moduleContents.forEach(el => el.classList.remove("active"));
+            moduleIcons.forEach(el => {
                 el.style.transform = "rotate(0deg)";
                 el.classList.remove("text-indigo-600", "dark:text-white");
             });
+            moduleBtns.forEach(el => el.setAttribute("aria-expanded", "false"));
 
-            // If it wasn't already expanded, open the targeted accordion
             if (!isAlreadyActive) {
                 targetContent.classList.add("active");
                 targetIcon.style.transform = "rotate(180deg)";
                 targetIcon.classList.add("text-indigo-600", "dark:text-white");
+                targetBtn.setAttribute("aria-expanded", "true");
             }
         }
 
         // ==================== QUIZ SYSTEM ====================
-        
-        // Select active quiz module
         function selectQuizModule(moduleNum) {
+            saveQuizProgress();
             currentQuizModule = moduleNum;
             currentQuestionIdx = 0;
             score = 0;
             selectedOptionIdx = null;
+            userAnswers = [];
             timeSpent = 0;
-            
-            // Clear any existing timer
-            clearInterval(timerInterval);
-            document.getElementById("question-timer").innerText = "00:00";
+            streak = 0;
+            reviewMode = false;
 
-            // Update sub-tab button styles
+            clearInterval(timerInterval);
+            startQuestionTimer();
+
             [1, 2, 3].forEach(num => {
                 const pill = document.getElementById(`quiz-mod-${num}`);
-                if (num === moduleNum) {
-                    pill.className = "px-4 py-2 rounded-lg text-xs font-bold transition-all bg-indigo-600 text-white shadow";
-                } else {
-                    pill.className = "px-4 py-2 rounded-lg text-xs font-bold transition-all text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-white";
-                }
+                pill.className = num === moduleNum
+                    ? "px-4 py-2 rounded-lg text-xs font-bold transition-all bg-indigo-600 text-white shadow-lg shadow-indigo-600/20 hover:bg-indigo-700 flex items-center gap-2"
+                    : "px-4 py-2 rounded-lg text-xs font-bold transition-all text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-white hover:bg-slate-900/10 dark:hover:bg-white/10 flex items-center gap-2";
             });
 
-            // Show start view
             document.getElementById("quiz-results-view").classList.add("hidden");
-            document.getElementById("quiz-questions-view").classList.add("hidden");
+            document.getElementById("quiz-review-view").classList.add("hidden");
             document.getElementById("quiz-start-view").classList.remove("hidden");
-            
-            // Update start module number
             document.getElementById("start-module-num").innerText = moduleNum;
+            document.getElementById("quiz-questions-view").classList.add("hidden");
         }
 
-        // NEW: Start quiz timer - Timer begins ONLY after clicking Start Quiz
         function startQuizTimer() {
             document.getElementById("quiz-start-view").classList.add("hidden");
             document.getElementById("quiz-questions-view").classList.remove("hidden");
-            
             currentQuestionIdx = 0;
             score = 0;
             selectedOptionIdx = null;
+            userAnswers = [];
             timeSpent = 0;
-            
-            // Start timer
+            streak = 0;
             startQuestionTimer();
             loadQuizQuestion();
         }
 
-        // Load Quiz question to UI
         function loadQuizQuestion() {
+            clearInterval(timerInterval);
             const currentQuestions = quizDatabase[currentQuizModule];
             const qData = currentQuestions[currentQuestionIdx];
 
-            // Reset panel state
             selectedOptionIdx = null;
             document.getElementById("feedback-dialog").classList.add("hidden");
             document.getElementById("next-btn").classList.add("hidden");
+            document.getElementById("prev-btn")?.classList.add("hidden");
 
-            // Update badge text
-            document.getElementById("quiz-module-badge").innerText = `Module ${currentQuizModule} Evaluation`;
+            if (currentQuestionIdx === 0) {
+                document.getElementById("prev-btn")?.classList.add("hidden");
+            } else if (document.getElementById("prev-btn")) {
+                document.getElementById("prev-btn").classList.remove("hidden");
+            }
+
+            document.getElementById("quiz-module-badge").innerText = `Module ${currentQuizModule} Assessment`;
             document.getElementById("current-q-num").innerText = currentQuestionIdx + 1;
             document.getElementById("total-q-num").innerText = currentQuestions.length;
 
-            // Fill Progress
             const progressPct = ((currentQuestionIdx) / currentQuestions.length) * 100;
             document.getElementById("progress-bar-fill").style.width = `${progressPct}%`;
 
-            // Display question
             document.getElementById("question-text").innerText = qData.q;
 
-            // Build Options Buttons
             const optionsGrid = document.getElementById("options-grid");
             optionsGrid.innerHTML = "";
 
             qData.options.forEach((opt, idx) => {
                 const button = document.createElement("button");
-                button.className = "text-left p-5 rounded-2xl bg-slate-900/5 dark:bg-white/5 border border-slate-200 dark:border-white/5 hover:border-indigo-500/40 hover:bg-slate-900/10 dark:hover:bg-white/10 font-bold text-xs text-slate-800 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white transition duration-200 focus:outline-none flex gap-4 items-start";
+                button.className = "text-left p-5 rounded-2xl bg-slate-900/5 dark:bg-white/5 border border-slate-200 dark:border-white/5 hover:border-indigo-500/40 hover:bg-slate-900/10 dark:hover:bg-white/10 font-bold text-xs text-slate-800 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white transition duration-200 focus:outline-none focus-ring flex gap-4 items-start group";
                 button.onclick = () => selectQuizOption(idx);
-                
+                button.setAttribute("tabindex", "0");
+
                 const label = String.fromCharCode(65 + idx);
                 button.innerHTML = `
-                    <span class="w-6 h-6 rounded-lg bg-slate-900/10 dark:bg-white/10 flex items-center justify-center text-xs text-slate-600 dark:text-slate-300 font-bold shrink-0">${label}</span>
-                    <span class="leading-relaxed">${opt}</span>
+                    <span class="w-6 h-6 rounded-lg bg-slate-900/10 dark:bg-white/10 flex items-center justify-center text-xs text-slate-600 dark:text-slate-300 font-bold shrink-0 group-hover:bg-indigo-500/10 group-hover:text-indigo-600 transition-colors">${label}</span>
+                    <span class="leading-relaxed group-hover:text-indigo-600 dark:group-hover:text-white transition-colors">${opt}</span>
                 `;
                 optionsGrid.appendChild(button);
             });
-            
-            // Reset question timer
+
             startQuestionTimer();
         }
 
-        // Start question timer
         function startQuestionTimer() {
             clearInterval(timerInterval);
             questionStartTime = Date.now();
-            
             timerInterval = setInterval(() => {
                 const elapsed = Math.floor((Date.now() - questionStartTime) / 1000);
                 const minutes = Math.floor(elapsed / 60);
@@ -930,9 +1124,31 @@
             }, 1000);
         }
 
-        // IMPROVED: Process user option choice with proper color feedback
+        function processAnswer(isCorrect) {
+            clearInterval(timerInterval);
+            const elapsed = Math.floor((Date.now() - questionStartTime) / 1000);
+            timeSpent += elapsed;
+
+            if (isCorrect) {
+                streak++;
+                if (streak > bestStreak) bestStreak = streak;
+            } else {
+                streak = 0;
+            }
+
+            userAnswers.push({
+                questionIdx: currentQuestionIdx,
+                selectedOption: selectedOptionIdx,
+                isCorrect: isCorrect,
+                timeTaken: elapsed
+            });
+
+            moduleProgress[currentQuizModule].questionsAnswered++;
+            moduleProgress[currentQuizModule].timeSpent += elapsed;
+        }
+
         function selectQuizOption(idx) {
-            if (selectedOptionIdx !== null) return; // Prevent double choosing
+            if (selectedOptionIdx !== null) return;
 
             selectedOptionIdx = idx;
             const qData = quizDatabase[currentQuizModule][currentQuestionIdx];
@@ -941,32 +1157,24 @@
 
             const isCorrect = (idx === qData.correct);
             if (isCorrect) score++;
+            processAnswer(isCorrect);
 
-            // Stop timer and accumulate time
-            clearInterval(timerInterval);
-            const elapsed = Math.floor((Date.now() - questionStartTime) / 1000);
-            timeSpent += elapsed;
-
-            // IMPROVED: Color feedback for all options
             for (let i = 0; i < buttons.length; i++) {
                 const btn = buttons[i];
-                btn.onclick = null; // Disable further clicking
+                btn.onclick = null;
                 const labelSpan = btn.querySelector('span:first-child');
-                const textSpan = btn.querySelector('span:last-child');
 
                 if (i === qData.correct) {
-                    // Correct answer - always GREEN
-                    btn.className = "text-left p-5 rounded-2xl border-2 border-emerald-500 bg-emerald-500/10 font-bold text-xs flex gap-4 items-start transition-all duration-300 answer-correct";
+                    btn.className = "text-left p-5 rounded-2xl border-2 border-emerald-500 bg-emerald-500/10 font-bold text-xs text-emerald-700 dark:text-emerald-300 flex gap-4 items-start transition-all duration-300 shadow-sm";
+                    labelSpan.className = "w-6 h-6 rounded-lg bg-emerald-500 flex items-center justify-center text-xs text-white font-bold shrink-0";
                 } else if (i === idx) {
-                    // Selected answer - RED if wrong
-                    btn.className = "text-left p-5 rounded-2xl border-2 border-rose-500 bg-rose-500/10 font-bold text-xs flex gap-4 items-start transition-all duration-300 answer-incorrect";
+                    btn.className = "text-left p-5 rounded-2xl border-2 border-rose-500 bg-rose-500/10 font-bold text-xs text-rose-700 dark:text-rose-300 flex gap-4 items-start transition-all duration-300 shadow-sm";
+                    labelSpan.className = "w-6 h-6 rounded-lg bg-rose-500 flex items-center justify-center text-xs text-white font-bold shrink-0";
                 } else {
-                    // Other options - disabled state
-                    btn.className = "text-left p-5 rounded-2xl border border-slate-200 dark:border-white/5 opacity-40 font-bold text-xs flex gap-4 items-start answer-disabled";
+                    btn.className = "text-left p-5 rounded-2xl border border-slate-200 dark:border-white/5 opacity-40 font-bold text-xs text-slate-500 dark:text-slate-400 flex gap-4 items-start transition-all duration-300";
                 }
             }
 
-            // Reveal assessment details dialogue
             const dialog = document.getElementById("feedback-dialog");
             const iconContainer = document.getElementById("feedback-icon-container");
             const title = document.getElementById("feedback-title");
@@ -976,28 +1184,33 @@
             text.innerText = qData.exp;
 
             if (isCorrect) {
-                dialog.className = "mb-8 p-5 rounded-2xl border border-emerald-500/20 bg-emerald-500/10 text-emerald-800 dark:text-emerald-300 transition-all duration-300 animate-slide-up";
+                dialog.className = "mb-8 p-5 rounded-2xl border border-emerald-500/20 bg-emerald-500/10 text-emerald-800 dark:text-emerald-300 transition-all duration-300 animate-slide-up shadow-sm";
                 iconContainer.className = "p-1.5 rounded-full bg-emerald-500 text-white shrink-0 flex items-center justify-center";
                 iconContainer.innerHTML = `<i data-lucide="check" class="w-4 h-4"></i>`;
-                title.innerText = "Correct Answer!";
+                title.innerText = "Correct Answer! ✓";
             } else {
-                dialog.className = "mb-8 p-5 rounded-2xl border border-rose-500/20 bg-rose-500/10 text-rose-800 dark:text-rose-300 transition-all duration-300 animate-slide-up";
+                dialog.className = "mb-8 p-5 rounded-2xl border border-rose-500/20 bg-rose-500/10 text-rose-800 dark:text-rose-300 transition-all duration-300 animate-slide-up shadow-sm";
                 iconContainer.className = "p-1.5 rounded-full bg-rose-500 text-white shrink-0 flex items-center justify-center";
-                iconContainer.innerHTML = `<i data-lucide="alert-circle" class="w-4 h-4"></i>`;
-                title.innerText = "Incorrect Answer";
+                iconContainer.innerHTML = `<i data-lucide="x" class="w-4 h-4"></i>`;
+                title.innerText = "Incorrect Answer ✗";
             }
 
             lucide.createIcons();
 
-            // Next Question or Summary Button toggle
             const nextBtn = document.getElementById("next-btn");
-            const isLast = (currentQuestionIdx === quizDatabase[currentQuizModule].length - 1);
             const nextSpan = nextBtn.querySelector("span");
-            nextSpan.innerText = isLast ? "View Module Summary" : "Next Answer";
+            const isLast = (currentQuestionIdx === quizDatabase[currentQuizModule].length - 1);
+            nextSpan.innerText = isLast ? "View Results" : "Next Question";
             nextBtn.classList.remove("hidden");
         }
 
-        // Navigate question index
+        function goToPreviousQuestion() {
+            if (currentQuestionIdx > 0) {
+                currentQuestionIdx--;
+                loadQuizQuestion();
+            }
+        }
+
         function goToNextQuestion() {
             const currentQuestions = quizDatabase[currentQuizModule];
             if (currentQuestionIdx < currentQuestions.length - 1) {
@@ -1008,8 +1221,14 @@
             }
         }
 
-        // Generate module end summary
         function showQuizSummary() {
+            if (selectedOptionIdx !== null && currentQuestionIdx === quizDatabase[currentQuizModule].length - 1) {
+                const qData = quizDatabase[currentQuizModule][currentQuestionIdx];
+                const isCorrect = (selectedOptionIdx === qData.correct);
+                processAnswer(isCorrect);
+            }
+
+            clearInterval(timerInterval);
             const currentQuestions = quizDatabase[currentQuizModule];
             document.getElementById("quiz-questions-view").classList.add("hidden");
             const summaryView = document.getElementById("quiz-results-view");
@@ -1026,6 +1245,33 @@
             const accuracy = Math.round((score / currentQuestions.length) * 100);
             document.getElementById("result-accuracy").innerText = `${accuracy}%`;
 
+            const minutes = Math.floor(timeSpent / 60);
+            const seconds = timeSpent % 60;
+            document.getElementById("result-time-taken").innerText = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+            document.getElementById("result-streak").innerText = bestStreak;
+
+            const progressRing = document.getElementById("result-progress-ring");
+            const circumference = 251.2;
+            const offset = circumference - (accuracy / 100) * circumference;
+            progressRing.style.strokeDashoffset = offset;
+
+            const correctCount = score;
+            const incorrectCount = currentQuestions.length - score;
+            document.getElementById("result-correct-count").innerText = correctCount;
+            document.getElementById("result-incorrect-count").innerText = incorrectCount;
+            document.getElementById("result-correct-pct").innerText = `${Math.round((correctCount / currentQuestions.length) * 100)}%`;
+            document.getElementById("result-incorrect-pct").innerText = `${Math.round((incorrectCount / currentQuestions.length) * 100)}%`;
+
+            moduleProgress[currentQuizModule].completed = true;
+            moduleProgress[currentQuizModule].lastScore = accuracy;
+            moduleProgress[currentQuizModule].attempts++;
+            if (accuracy > moduleProgress[currentQuizModule].bestScore) {
+                moduleProgress[currentQuizModule].bestScore = accuracy;
+            }
+
+            saveProgress();
+            updateDashboard();
+
             const nextModBtn = document.getElementById("next-module-action-btn");
             if (currentQuizModule < 3) {
                 nextModBtn.classList.remove("hidden");
@@ -1033,10 +1279,8 @@
             } else {
                 nextModBtn.classList.add("hidden");
             }
-            
-            // Clear timer
-            clearInterval(timerInterval);
-            
+
+            userAnswers = [];
             lucide.createIcons();
         }
 
@@ -1049,6 +1293,194 @@
                 selectQuizModule(currentQuizModule + 1);
             }
         }
+
+        function reviewAnswers() {
+            reviewMode = true;
+            document.getElementById("quiz-results-view").classList.add("hidden");
+            document.getElementById("quiz-review-view").classList.remove("hidden");
+            renderReviewQuestions();
+        }
+
+        function backToResults() {
+            reviewMode = false;
+            document.getElementById("quiz-review-view").classList.add("hidden");
+            document.getElementById("quiz-results-view").classList.remove("hidden");
+        }
+
+        function renderReviewQuestions() {
+            const reviewContainer = document.getElementById("review-questions");
+            reviewContainer.innerHTML = "";
+
+            const currentQuestions = quizDatabase[currentQuizModule];
+            const userAnswerMap = new Map(userAnswers.map(a => [a.questionIdx, a]));
+
+            currentQuestions.forEach((qData, idx) => {
+                const userAnswer = userAnswerMap.get(idx);
+                const isCorrect = userAnswer ? userAnswer.isCorrect : null;
+                const selectedOption = userAnswer ? userAnswer.selectedOption : null;
+
+                const questionCard = document.createElement("div");
+                questionCard.className = `themed-card rounded-2xl p-5 transition-all duration-200 ${isCorrect === true ? 'border-emerald-500/30 bg-emerald-500/5' : isCorrect === false ? 'border-rose-500/30 bg-rose-500/5' : 'border-slate-200 dark:border-white/5'}`;
+
+                questionCard.innerHTML = `
+                    <div class="flex justify-between items-start mb-3">
+                        <div class="flex items-center gap-2">
+                            <span class="text-xs font-bold text-slate-600 dark:text-slate-400">Question ${idx + 1}</span>
+                            ${isCorrect === true ? '<span class="text-xs bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 px-2 py-0.5 rounded-full font-bold">✓ Correct</span>' : ''}
+                            ${isCorrect === false ? '<span class="text-xs bg-rose-500/10 text-rose-700 dark:text-rose-300 px-2 py-0.5 rounded-full font-bold">✗ Incorrect</span>' : ''}
+                            ${isCorrect === null ? '<span class="text-xs bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-300 px-2 py-0.5 rounded-full font-bold">Not Attempted</span>' : ''}
+                        </div>
+                        ${userAnswer ? `<span class="text-xs text-slate-500 dark:text-slate-400">${userAnswer.timeTaken}s</span>` : ''}
+                    </div>
+                    <h4 class="font-bold text-sm mb-3">${qData.q}</h4>
+                    <div class="space-y-2 mb-3">
+                        ${qData.options.map((opt, optIdx) => {
+                            const isCorrectOpt = optIdx === qData.correct;
+                            const isSelected = optIdx === selectedOption;
+                            let bgClass = "bg-slate-900/5 dark:bg-white/5";
+                            let borderClass = "border-slate-200 dark:border-white/5";
+                            let textClass = "text-slate-700 dark:text-slate-300";
+
+                            if (isCorrectOpt) {
+                                bgClass = "bg-emerald-500/10";
+                                borderClass = "border-emerald-500";
+                                textClass = "text-emerald-700 dark:text-emerald-300";
+                            } else if (isSelected && !isCorrectOpt) {
+                                bgClass = "bg-rose-500/10";
+                                borderClass = "border-rose-500";
+                                textClass = "text-rose-700 dark:text-rose-300";
+                            }
+
+                            return `
+                                <div class="p-3 rounded-xl ${bgClass} border ${borderClass} ${textClass} text-xs">
+                                    <div class="flex items-center gap-2">
+                                        <span class="font-bold">${String.fromCharCode(65 + optIdx)}.</span>
+                                        <span class="flex-1">${opt}</span>
+                                        ${isCorrectOpt ? '<i data-lucide="check" class="w-4 h-4 text-emerald-500"></i>' : ''}
+                                        ${isSelected && !isCorrectOpt ? '<i data-lucide="x" class="w-4 h-4 text-rose-500"></i>' : ''}
+                                    </div>
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>
+                    <div class="text-xs text-slate-600 dark:text-slate-400 p-3 bg-slate-900/5 dark:bg-white/5 rounded-xl">
+                        <strong>Explanation:</strong> ${qData.exp}
+                    </div>
+                `;
+
+                reviewContainer.appendChild(questionCard);
+            });
+
+            lucide.createIcons();
+        }
+
+        // ==================== DASHBOARD ====================
+        function updateDashboard() {
+            const completedModules = Object.values(moduleProgress).filter(m => m.completed).length;
+            const overallProgress = (completedModules / 3) * 100;
+
+            document.getElementById("overall-progress-text").innerText = `${Math.round(overallProgress)}%`;
+            document.getElementById("completed-modules").innerText = completedModules;
+
+            const progressRing = document.getElementById("overall-progress-ring");
+            const circumference = 251.2;
+            const offset = circumference - (overallProgress / 100) * circumference;
+            progressRing.style.strokeDashoffset = offset;
+
+            const totalScores = Object.values(moduleProgress).map(m => m.bestScore);
+            const avgScore = totalScores.reduce((a, b) => a + b, 0) / totalScores.length || 0;
+            document.getElementById("avg-score").innerText = `${Math.round(avgScore)}%`;
+
+            const totalTime = Object.values(moduleProgress).reduce((a, m) => a + m.timeSpent, 0);
+            const totalMinutes = Math.floor(totalTime / 60);
+            document.getElementById("total-time").innerText = `${totalMinutes}m`;
+
+            [1, 2, 3].forEach(modNum => {
+                const mod = moduleProgress[modNum];
+                document.getElementById(`m${modNum}-score`).innerText = `${mod.bestScore}%`;
+                document.getElementById(`m${modNum}-best`).innerText = `${mod.bestScore}%`;
+                document.getElementById(`m${modNum}-progress`).style.width = `${mod.bestScore}%`;
+            });
+
+            const totalQuestions = Object.values(moduleProgress).reduce((a, m) => a + m.questionsAnswered, 0);
+            const totalCorrect = Object.values(moduleProgress).reduce((a, m) => a + Math.round(m.bestScore * 30 / 100), 0);
+            const totalIncorrect = totalQuestions - totalCorrect;
+
+            document.getElementById("total-questions-attempted").innerText = totalQuestions;
+            document.getElementById("total-correct").innerText = totalCorrect;
+            document.getElementById("total-incorrect").innerText = totalIncorrect;
+            document.getElementById("current-streak").innerText = bestStreak;
+        }
+
+        // ==================== PROGRESS SAVING ====================
+        function saveProgress() {
+            const progressData = {
+                moduleProgress: moduleProgress,
+                bestStreak: bestStreak,
+                theme: document.body.classList.contains("dark") ? "dark" : "light"
+            };
+            localStorage.setItem("uhvPortalProgress", JSON.stringify(progressData));
+        }
+
+        function loadProgress() {
+            const savedData = localStorage.getItem("uhvPortalProgress");
+            if (!savedData) return;
+
+            try {
+                const progressData = JSON.parse(savedData);
+                if (progressData.moduleProgress) moduleProgress = progressData.moduleProgress;
+                if (progressData.bestStreak) bestStreak = progressData.bestStreak;
+                if (progressData.theme) {
+                    if (progressData.theme === "dark") {
+                        document.body.classList.add("dark");
+                        document.getElementById("theme-icon").setAttribute("data-lucide", "sun");
+                    } else {
+                        document.body.classList.remove("dark");
+                        document.getElementById("theme-icon").setAttribute("data-lucide", "moon");
+                    }
+                }
+            } catch (e) {
+                console.error("Error loading progress:", e);
+            }
+        }
+
+        function saveQuizProgress() {
+            const quizState = {
+                module: currentQuizModule,
+                questionIdx: currentQuestionIdx,
+                score: score,
+                timeSpent: timeSpent,
+                userAnswers: userAnswers,
+                streak: streak,
+                timestamp: Date.now()
+            };
+            localStorage.setItem("uhvQuizState", JSON.stringify(quizState));
+        }
+
+        // ==================== KEYBOARD NAVIGATION ====================
+        function setupKeyboardNavigation() {
+            document.addEventListener('keydown', (e) => {
+                if (document.getElementById("quiz-questions-view").classList.contains("hidden")) return;
+
+                if (e.key >= '1' && e.key <= '4') {
+                    const optionIndex = parseInt(e.key) - 1;
+                    const options = document.querySelectorAll("#options-grid button");
+                    if (optionIndex < options.length) {
+                        options[optionIndex].click();
+                    }
+                }
+
+                if (e.key === 'ArrowRight') goToNextQuestion();
+                else if (e.key === 'ArrowLeft') goToPreviousQuestion();
+
+                if (e.key === 'Enter' && !document.getElementById("feedback-dialog").classList.contains("hidden")) {
+                    goToNextQuestion();
+                }
+            });
+        }
+
+        setTimeout(setupKeyboardNavigation, 100);
     </script>
 </body>
 </html>
+</canvaentity>
